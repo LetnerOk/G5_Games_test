@@ -181,6 +181,7 @@ revenue_comparison = pd.DataFrame({'Period': ['before_promo', 'promo', 'after_pr
                                                promo_weekdays['Revenue'].sum(),
                                                after_promo_weekdays['Revenue'].sum()]})
 
+# Посчитаем ARPPU
 revenue_comparison['ARPPU'] = [before_promo_weekdays['Revenue'].sum() / 
                               before_promo_weekdays[before_promo_weekdays['Revenue'] > 0]['User_ID'].nunique(),
                               promo_weekdays['Revenue'].sum() / 
@@ -188,11 +189,12 @@ revenue_comparison['ARPPU'] = [before_promo_weekdays['Revenue'].sum() /
                               after_promo_weekdays['Revenue'].sum() / 
                               after_promo_weekdays[after_promo_weekdays['Revenue'] > 0]['User_ID'].nunique()]
 
+# Общее число платежей
 revenue_comparison['Payments_count'] = [before_promo_weekdays['Payments'].sum(),
                                         promo_weekdays['Payments'].sum(),
                                         after_promo_weekdays['Payments'].sum()]
     
-
+# Количество платящих юзеров
 revenue_comparison['Paying_users'] = [before_promo_weekdays[before_promo_weekdays['Revenue'] > 0]['User_ID'].nunique(),
                                       promo_weekdays[promo_weekdays['Revenue'] > 0]['User_ID'].nunique(),
                                       after_promo_weekdays[after_promo_weekdays['Revenue'] > 0]['User_ID'].nunique()]
