@@ -269,6 +269,41 @@ F(t) = A * ln(t + B)
 
 LTV(t) = A * (1−e<sup>−B*t</sup>)
 
+Оптимальные значения коэффициентов также подбираются на основе метода наименьших квадратов. Используя метод `curve_fit` из библиотеки **scipy Python**,
+можно задать вид уравнения и подобрать оптимальные коэффициенты на основе имеющихся данных. Приведу простой пример на **Python**.
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.optimize import curve_fit
+
+# Данные: накопительный ARPU за несколько дней
+days = np.array([1, 3, 7, 14])
+cumulative_arpu = np.array([0.5, 1.2, 2.5, 4.0])  # Примерные значения
+
+#LTV-модель
+def ltv_function(t, A, B):
+    return A * (1 - np.exp(-B * t))
+
+# Подбор параметров A и B
+params, mat_cov = curve_fit(ltv_function, days, cumulative_arpu)
+
+# Прогнозируем LTV на 60 дней
+future_days = np.arange(1, 61)
+predicted_ltv = ltv_function(future_days, params[0], params[1])
+
+# Визуализация
+plt.plot(days, cumulative_arpu, 'o', label='Фактические данные')
+plt.plot(future_days, predicted_ltv, '-', label='Прогноз LTV')
+plt.xlabel('Дни')
+plt.ylabel('Кумулятивный LTV')
+plt.legend()
+plt.show()
+```
+
+![](/figures_for_test/3.png)
+
+
 
 
 
